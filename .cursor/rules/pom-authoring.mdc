@@ -1,0 +1,71 @@
+---
+description: Page Object Model — SauceDemo hierarchy, locators, no expect in POMs
+globs: src/pages/**/*.ts
+alwaysApply: false
+---
+
+# Page Object Model
+
+## Hierarchy
+
+```
+BasePage
+├── LoginPage
+└── SauceDemoPage
+    ├── InventoryPage
+    ├── CartPage
+    ├── ProductDetailPage
+    └── checkout/
+        ├── CheckoutInfoPage
+        ├── CheckoutOverviewPage
+        └── CheckoutCompletePage
+```
+
+| New surface | Extend |
+|-------------|--------|
+| Authenticated pages | `SauceDemoPage` |
+| Login | `BasePage` directly |
+
+---
+
+## Layout
+
+- `src/pages/saucedemo/<name>-page.ts`
+- `src/pages/saucedemo/checkout/<name>-page.ts`
+- Constructor: `(page: Page)` only — **no `await` in constructors**
+
+---
+
+## Locators
+
+**Priority:** `getByTestId` (SauceDemo `data-test` attributes) → `getByRole` → stable CSS.
+
+```typescript
+export default class ExamplePage extends SauceDemoPage {
+  private readonly checkoutButton = this.page.getByTestId('checkout');
+
+  checkoutButtonLocator(): Locator {
+    return this.checkoutButton;
+  }
+}
+```
+
+Expose locators or actions — not bare selector strings to specs.
+
+---
+
+## Rules
+
+1. **No `expect()` in POMs** — assertions stay in specs.
+2. Navigation that changes screen may return the next page object.
+3. Product slugs (e.g. `sauce-labs-backpack`) map to `data-test` IDs in `InventoryPage`.
+
+---
+
+## Related
+
+| Need | Use |
+|------|-----|
+| Login page | `loginPage` fixture ([fe-fixtures.ts](../../src/fixtures/fe-fixtures.ts)) |
+| Pre-authenticated inventory | `inventoryPage` fixture |
+| CLI exploration | `.cursor/skills/playwright-cli/` |

@@ -1,0 +1,30 @@
+{
+  "name": "saucedemo-qa",
+  "version": "1.0.0",
+  "description": "Playwright QA for SauceDemo — env profiles, POM, test catalog generation.",
+  "private": true,
+  "scripts": {
+    "tsc": "npx tsc --noEmit",
+    "playwright": "npx playwright test --config ./src/config/playwright.config.ts",
+    "playwright:install": "npx playwright install chromium",
+    "generate-docs": "npx tsx generate-test-docs.ts reports/monocart-report-latest/index.json docs/TEST_CATALOG.md"
+  },
+  "keywords": [
+    "playwright",
+    "qa",
+    "demo",
+    "saucedemo"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.15.18",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.5.0",
+    "glob": "^11.0.3",
+    "monocart-reporter": "^2.9.18",
+    "playwright": "1.60.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.9.3"
+  }
+}

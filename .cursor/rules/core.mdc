@@ -1,0 +1,83 @@
+---
+description: SauceDemo QA project hub — structure, commands, aliases, playwright-cli policy
+alwaysApply: true
+---
+
+# SauceDemo QA — Core
+
+Playwright project for **SauceDemo** ([saucedemo.com](https://www.saucedemo.com/)) UI E2E tests.
+
+**Playbook:** [AGENTS.md](../../AGENTS.md) · **Human overview:** [README.md](../../README.md) · **Test plan:** [docs/SAUCEDEMO_TEST_PLAN.md](../../docs/SAUCEDEMO_TEST_PLAN.md)
+
+---
+
+## Layout
+
+| Path | Role |
+|------|------|
+| `tests/frontend/saucedemo/` | UI E2E (`chromium`) |
+| `src/pages/saucedemo/` | POM |
+| `src/fixtures/` | `fe-fixtures` |
+| `src/data/input-data/` | Users, checkout data |
+| `envs/` | `.env.local`, `.env.dev`, `.env.prod` |
+| `reports/monocart-report-latest/` | Overwritten each run → `npm run generate-docs` |
+
+Specs live in **`tests/`**; framework code in **`src/`**.
+
+---
+
+## Path aliases
+
+| Alias | Path |
+|-------|------|
+| `@fixtures/*` | `src/fixtures/*` |
+| `@pages/*` | `src/pages/*` |
+| `@helpers/*` | `src/test-helpers/*` |
+| `@config/*` | `src/config/*` |
+
+Playwright config: **`src/config/playwright.config.ts`**
+
+---
+
+## Commands
+
+```bash
+npm run playwright -- tests/frontend/saucedemo --project=chromium
+npm run playwright -- --grep @smoke
+test_env=dev npm run playwright
+npm run generate-docs
+npm run tsc
+npm run playwright:install
+```
+
+---
+
+## Projects
+
+| Project | `testDir` | Use |
+|---------|-----------|-----|
+| `chromium` | `tests/frontend` | SauceDemo UI |
+
+Locale: `en-US`. `BASE_URL` → https://www.saucedemo.com/
+
+---
+
+## Allowed tooling
+
+| Allowed | Forbidden for browser/UI |
+|---------|---------------------------|
+| **playwright-cli** | `cursor-ide-browser` MCP, other MCP browser drivers |
+
+Skill: [`.cursor/skills/playwright-cli/SKILL.md`](../skills/playwright-cli/SKILL.md)
+
+---
+
+## Specialist rules
+
+| Rule | When |
+|------|------|
+| [spec-authoring.mdc](./spec-authoring.mdc) | `tests/**/*.spec.ts` |
+| [pom-authoring.mdc](./pom-authoring.mdc) | `src/pages/**/*.ts` |
+| [fixtures-and-helpers.mdc](./fixtures-and-helpers.mdc) | `src/fixtures/**`, `src/test-helpers/**` |
+
+Naming: [docs/TEST_NAMING.md](../../docs/TEST_NAMING.md)

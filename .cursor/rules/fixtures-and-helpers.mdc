@@ -1,0 +1,56 @@
+---
+description: Fixtures and helpers — loginPage, inventoryPage
+globs: src/fixtures/**/*.ts,src/test-helpers/**/*.ts
+alwaysApply: false
+---
+
+# Fixtures and helpers
+
+## When to use what
+
+| Layer | Use when | Location |
+|-------|----------|----------|
+| **Fixture** | Setup + **teardown** (browser context) | `src/fixtures/` |
+| **Helper** | Stateless flow reused by specs / doc generator | `src/test-helpers/` |
+| **POM** | UI surface interactions | `src/pages/` |
+
+---
+
+## Frontend — [fe-fixtures.ts](../../src/fixtures/fe-fixtures.ts)
+
+| Fixture | Behavior |
+|---------|----------|
+| `loginPage` | `goto('/')` → `LoginPage` instance |
+| `inventoryPage` | `goto('/')` → login as `standard_user` → `InventoryPage` |
+
+```typescript
+loginPage: async ({ page }, use) => {
+  await page.goto('/');
+  await use(new LoginPage(page));
+},
+
+inventoryPage: async ({ page }, use) => {
+  await page.goto('/');
+  const inventory = await new LoginPage(page).login(
+    users.standard.username,
+    users.standard.password,
+  );
+  await use(inventory);
+},
+```
+
+Test data: [`saucedemo-users.json`](../../src/data/input-data/saucedemo-users.json), [`checkout-data.json`](../../src/data/input-data/checkout-data.json) via [`input-data.ts`](../../src/config/input-data.ts).
+
+---
+
+## Authoring pattern
+
+```typescript
+myFixture: async ({ page }, use) => {
+  await setup(page);
+  await use(resource);
+  await teardown(page);
+},
+```
+
+Split new domains into separate fixture files when `fe-fixtures` grows.

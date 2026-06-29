@@ -1,0 +1,75 @@
+---
+description: Playwright spec authoring — imports, TC IDs, tags, test.step
+globs: tests/**/*.spec.ts
+alwaysApply: false
+---
+
+# Spec authoring
+
+## Imports
+
+**Frontend** (`tests/frontend/**`):
+
+```typescript
+import { test, expect } from '@fixtures/fe-fixtures';
+```
+
+---
+
+## Test case IDs
+
+```text
+TC-{FE}-{DOMAIN}-{FEATURE}-{NNN} — <English description>
+```
+
+| DOMAIN | Scope |
+|--------|--------|
+| `SDM` | `tests/frontend/saucedemo/` |
+
+FEATURE codes: [docs/TEST_NAMING.md](../../docs/TEST_NAMING.md)
+
+---
+
+## Tags
+
+| Tag | Use |
+|-----|-----|
+| `@smoke` | Fast sanity |
+| `@critical` | High priority UI |
+
+Use `test.step()` for steps that should appear in `TEST_CATALOG.md` (via `npm run generate-docs`).
+
+---
+
+## Frontend pattern
+
+```typescript
+test('TC-FE-SDM-INV-001 — …', async ({ inventoryPage }) => {
+  await test.step('Verify products', async () => {
+    await expect(inventoryPage.inventoryItemsLocator()).toHaveCount(6);
+  });
+});
+```
+
+- **`loginPage` fixture** opens `/` on login screen — do not call `page.goto('/')` again unless testing navigation.
+- **`inventoryPage` fixture** logs in as `standard_user` before each test.
+- Assertions in specs, not POMs.
+- Negative login: use `fillCredentials` + `clickLogin` (not `login()` which assumes success).
+
+---
+
+## Anti-patterns
+
+- `import { test } from '@playwright/test'` in frontend specs
+- `page.waitForTimeout()` for sync
+- Raw locators in specs — use POM methods
+- `test.only` left in commits
+
+---
+
+## Run
+
+```bash
+npm run playwright -- tests/frontend/saucedemo/login.spec.ts --project=chromium
+npm run playwright -- tests/frontend/saucedemo --project=chromium
+```

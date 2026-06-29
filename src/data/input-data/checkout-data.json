@@ -1,0 +1,37 @@
+{
+  "valid": {
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "postalCode": "12345"
+  },
+  "empty": {
+    "firstName": "",
+    "lastName": "",
+    "postalCode": ""
+  },
+  "missingLastName": {
+    "firstName": "Jane",
+    "lastName": "",
+    "postalCode": ""
+  },
+  "missingPostalCode": {
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "postalCode": ""
+  },
+  "lastNameOnly": {
+    "firstName": "",
+    "lastName": "Doe",
+    "postalCode": ""
+  },
+  "postalCodeOnly": {
+    "firstName": "",
+    "lastName": "",
+    "postalCode": "12345"
+  },
+  "specialCharacters": {
+    "firstName": "O'Brien",
+    "lastName": "Smith-Jones",
+    "postalCode": "12345"
+  }
+}
